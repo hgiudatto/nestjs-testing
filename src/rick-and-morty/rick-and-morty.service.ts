@@ -1,5 +1,12 @@
+/* eslint-disable prettier/prettier */
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import {
   getCharacters,
   Character,
@@ -7,11 +14,19 @@ import {
   Info,
   CharacterLocation,
 } from 'rickmortyapi';
-import fetch from 'node-fetch';
+import axios, { AxiosError } from 'axios';
+import {
+  ReadRickAndMortyRequestDto,
+  ReadRickAndMortyResponse,
+} from './rick-and-morty.dto';
+import { firstValueFrom, of, defer } from 'rxjs';
+import { retry, retryWhen, delay, take, map, catchError } from 'rxjs/operators';
+import { resolve } from 'path';
 
 @Injectable()
 export class RickAndMortyService {
-  constructor(private httpService: HttpService) {}
+  private readonly logger = new Logger(RickAndMortyService.name);
+  constructor(private readonly httpService: HttpService) {}
 
   async getRickAndMorty(id: number) {
     if (id < 1 || id > 826)
@@ -52,18 +67,60 @@ export class RickAndMortyService {
     return character;
   };
 
-  fetchRickAndMorty = async (id: number) => {
-    try {
-      const response = await fetch(
-        `https://rickandmortyapi.com/api/character/${id}`,
-        { headers: { 'Content-Type': 'application/json' } },
+  delay = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  delayPost = (cb: () => void, ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms)).then(cb);
+  };
+
+  fetchRickAndMorty = async (
+    userData: ReadRickAndMortyRequestDto,
+  ): Promise<Response | void> => {
+    const { rickMortyId } = userData;
+    console.log('Waiting 5 secs before post...');
+    /* await this.delayPost(
+      () =>
+        console.log(
+          ` POST -> https://rickandmortyapi.com/api/character/${rickMortyId}`,
+        ),
+      5000,
+    ); */
+    await new Promise<void>((resolve) =>
+      setTimeout(() => resolve(), 5000),
+    ).then(() => {
+      console.log(
+        ` POST -> https://rickandmortyapi.com/api/character/${rickMortyId}`,
       );
-
-      const data = await response.json();
-
-      return data;
-    } catch (err) {
-      return err;
-    }
+    });
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(`https://rickandmortyapi.com/api/character/${rickMortyId}`)
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    return data;
+    /* const { rickMortyId } = userData;
+    this.logger.debug(`Searching for id: `, rickMortyId);
+    let data;
+    defer(async () => {
+      data = await firstValueFrom(
+        this.httpService
+          .get(`https://rickandmortyapi.com/api/character/${rickMortyId}`)
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data);
+              throw 'An error happened!';
+            }),
+          ),
+      );
+    })
+      .pipe(delay(5000))
+      .subscribe(data); */
   };
 }

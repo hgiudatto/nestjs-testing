@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "args": ["${workspaceFolder}/src/main.ts"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceRoot}",
+      "envFile": "${workspaceFolder}/.env",
+      "name": "Debug Nest Framework",
+      "protocol": "inspector",
+      "request": "launch",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "sourceMaps": true,
+      "type": "node"
+    }
+  ],
+  "version": "0.2.0"
+}
