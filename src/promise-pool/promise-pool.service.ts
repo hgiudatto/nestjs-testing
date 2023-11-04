@@ -5,7 +5,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { PromisePool } from '@supercharge/promise-pool';
 import { firstValueFrom, catchError } from 'rxjs';
-import { ReadRickAndMortyRequestDto } from 'src/rick-and-morty/rick-and-morty.dto';
+import {
+  ReadRickAndMortyRequestDto,
+  ReadRickAndMortyResponseDto,
+} from 'src/promise-pool/promise-pool.dto';
 
 @Injectable()
 export class PromiseRickMortyPoolService {
@@ -13,15 +16,12 @@ export class PromiseRickMortyPoolService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  fetchPooledRickAndMorty = async (
-    userData: ReadRickAndMortyRequestDto,
-  ): Promise<Response | void> => {
-    const { rickMortyId } = userData;
-    const retrieveRicks = () => {
-      return new Promise(async (resolve, reject) => {
+  retrieveRicks = async (rickId: string) => {
+    return new Promise(async (resolve, reject) => {
+      setTimeout(async () => {
         const { data } = await firstValueFrom(
           this.httpService
-            .get(`https://rickandmortyapi.com/api/character/${rickMortyId}`)
+            .get(`https://rickandmortyapi.com/api/character/${rickId}`)
             .pipe(
               catchError((error: AxiosError) => {
                 this.logger.error(error.response.data);
@@ -30,25 +30,31 @@ export class PromiseRickMortyPoolService {
               }),
             ),
         );
-        await new Promise<void>((resolve) =>
-          setTimeout(() => resolve(), 1000),
-        ).then(() =>
-          console.log('Esperando 1 seg. antes de retornar el proximo Rick.'),
-        );
         resolve(data);
-      });
-    };
-
-    const concurrency: number = 3;
-
-    // const pool = PromisePool(ricksPromiseProducer, concurrency);
-    // pool.start().then(() => console.log('Complete'));
-    const { results, errors } = await PromisePool.for([+rickMortyId])
-      .withConcurrency(concurrency)
-      .process(() => {
-        retrieveRicks();
-      });
-    console.log(results);
-    console.log(errors);
+      }, 5000);
+    });
   };
+
+  async fetchPooledRickAndMorty(
+    userData,
+  ): Promise<ReadRickAndMortyResponseDto> {
+    const { rickMortyIds } = userData;
+
+    const concurrency: number = 1;
+
+    const { results, errors } = await PromisePool.for(rickMortyIds)
+      .onTaskStarted((rick) => {
+        console.log(`Inicia la busqueda del rick: ${rick}`);
+      })
+      .onTaskFinished((rick) => {
+        console.log(`Finaliza la busqueda del rick: ${rick}`);
+      })
+      .withConcurrency(concurrency)
+      .process(this.retrieveRicks);
+
+    console.log('Results', results);
+    console.log('Errors', errors);
+
+    return { errors, results };
+  }
 }

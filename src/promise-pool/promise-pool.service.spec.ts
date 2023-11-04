@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PromiseRickMortyPoolService } from './promise-pool.service';
 
 describe('PromiseRickMortyPoolService', () => {
   let service: PromiseRickMortyPoolService;

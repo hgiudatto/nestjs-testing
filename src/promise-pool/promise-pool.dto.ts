@@ -24,6 +24,8 @@ export class ReadRickAndMortyRequestDto {
   rickMortyIds: string[];
 }
 
-export class ReadOneRickAndMortyRequestDto {
-  rickMortyId: string;
+export class ReadRickAndMortyResponseDto {
+  results: unknown[];
+
+  errors: unknown[];
 }

@@ -16,6 +16,7 @@ import {
 } from 'rickmortyapi';
 import axios, { AxiosError } from 'axios';
 import {
+  ReadOneRickAndMortyRequestDto,
   ReadRickAndMortyRequestDto,
   ReadRickAndMortyResponse,
 } from './rick-and-morty.dto';
@@ -76,7 +77,7 @@ export class RickAndMortyService {
   };
 
   fetchRickAndMorty = async (
-    userData: ReadRickAndMortyRequestDto,
+    userData: ReadOneRickAndMortyRequestDto,
   ): Promise<Response | void> => {
     const { rickMortyId } = userData;
     console.log('Waiting 5 secs before post...');

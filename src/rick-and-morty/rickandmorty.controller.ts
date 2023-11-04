@@ -13,6 +13,7 @@ import { RickAndMortyService } from './rick-and-morty.service';
 import {
   ReadRickAndMortyResponse,
   ReadRickAndMortyRequestDto,
+  ReadOneRickAndMortyRequestDto,
 } from './rick-and-morty.dto';
 
 @Controller('rickandmorty')
@@ -22,7 +23,7 @@ export class RickandmortyController {
   @HttpCode(HttpStatus.OK)
   @Post('retrieve_rickMortys')
   async getRickMorty(
-    @Body() userData: ReadRickAndMortyRequestDto,
+    @Body() userData: ReadOneRickAndMortyRequestDto,
   ): Promise<Response | void> {
     return await this.rickAndMortyService.fetchRickAndMorty(userData);
   }
