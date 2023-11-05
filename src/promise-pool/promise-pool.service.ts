@@ -51,7 +51,7 @@ export class PromiseRickMortyPoolService {
       .onTaskStarted((rick, pool) => {
         console.log(`Inicia la busqueda del avatar: ${rick} ......`);
         console.log(`Progreso: ${pool.processedPercentage()}%`);
-        console.log(`Tareas activas: ${pool.processedItems().length}`);
+        console.log(`Tareas procesadas: ${pool.processedItems().length}`);
         console.log(`Tareas activas: ${pool.activeTasksCount()}`);
       })
       .onTaskFinished((rick) => {
