@@ -54,7 +54,7 @@ export class PromiseRickMortyPoolService {
         console.log(`Tareas activas: ${pool.processedItems().length}`);
         console.log(`Tareas activas: ${pool.activeTasksCount()}`);
       })
-      .onTaskFinished((rick, pool) => {
+      .onTaskFinished((rick) => {
         console.log(`...... Finaliza la busqueda del avatar: ${rick}`);
       })
       .withConcurrency(concurrency)
