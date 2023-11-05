@@ -5,7 +5,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { PromisePool } from '@supercharge/promise-pool';
 import { firstValueFrom, catchError } from 'rxjs';
-import { ReadRickAndMortyResponseDto } from 'src/promise-pool/promise-pool.dto';
+import {
+  ReadRickAndMortyResponse,
+  ReadRickAndMortyResponseDto,
+} from 'src/promise-pool/promise-pool.dto';
 
 @Injectable()
 export class PromiseRickMortyPoolService {
@@ -20,7 +23,9 @@ export class PromiseRickMortyPoolService {
 
     const concurrency: number = 1;
 
-    const retrieveRicks = async (rickId: string) => {
+    const retrieveRicks = async (
+      rickId: string,
+    ): Promise<ReadRickAndMortyResponse> => {
       return new Promise(async (resolve, reject) => {
         setTimeout(async () => {
           const { data } = await firstValueFrom(
@@ -34,17 +39,23 @@ export class PromiseRickMortyPoolService {
                 }),
               ),
           );
-          resolve(data);
+          let rickFound: ReadRickAndMortyResponse =
+            new ReadRickAndMortyResponse();
+          rickFound = data;
+          resolve(rickFound);
         }, 5000);
       });
     };
 
     const { results, errors } = await PromisePool.for(rickMortyIds)
-      .onTaskStarted((rick) => {
-        console.log(`Inicia la busqueda del rick: ${rick}`);
+      .onTaskStarted((rick, pool) => {
+        console.log(`Inicia la busqueda del avatar: ${rick} ......`);
+        console.log(`Progreso: ${pool.processedPercentage()}%`);
+        console.log(`Tareas activas: ${pool.processedItems().length}`);
+        console.log(`Tareas activas: ${pool.activeTasksCount()}`);
       })
-      .onTaskFinished((rick) => {
-        console.log(`Finaliza la busqueda del rick: ${rick}`);
+      .onTaskFinished((rick, pool) => {
+        console.log(`...... Finaliza la busqueda del avatar: ${rick}`);
       })
       .withConcurrency(concurrency)
       .process(retrieveRicks);
