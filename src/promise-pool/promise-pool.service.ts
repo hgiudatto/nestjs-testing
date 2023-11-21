@@ -59,45 +59,71 @@ export class PromiseRickMortyPoolService {
     );
   }
 
-  retrieveRicks = async (rickId: string): Promise<ReadRickAndMortyResponse> => {
+  async fetchConcurrentRickAndMorty(
+    userData,
+  ): Promise<void | ReadRickAndMortyResponseDto> {
+    const { rickMortyIds } = userData;
     const dateStarted = new Date();
     const millisStart = dateStarted.getMilliseconds();
     const secsStart = dateStarted.getSeconds();
     const minsStart = dateStarted.getMinutes();
     const hourStart = dateStarted.getHours();
-    const dayStart = dateStarted.getDay();
-    const monthStart = dateStarted.getMonth();
-    const yearStart = dateStarted.getFullYear();
     const fullTimeSearchStarted = `${hourStart}:${minsStart}:${secsStart}:${millisStart}`;
-    this.logger.debug(`Full time Search started at: ${fullTimeSearchStarted}`);
-    return new Promise(async (resolve, reject) => {
-      setTimeout(async () => {
-        const { data } = await firstValueFrom(
-          this.httpService
-            .get(`https://rickandmortyapi.com/api/character/${rickId}`)
-            .pipe(
-              catchError((error: AxiosError) => {
-                this.logger.error(error.response.data);
-                reject();
-                throw 'An error happened!';
-              }),
-            ),
-        );
-        let rickFound: ReadRickAndMortyResponse =
-          new ReadRickAndMortyResponse();
-        rickFound = data;
-        const end = Date.now();
-        const fmtNow = new Date(end);
-        const searchFinishedAt = fmtNow.toLocaleDateString('en-GB', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        });
+    this.logger.debug(`Search started out at: ${fullTimeSearchStarted}`);
+    const rickAndMortys = rickMortyIds.map((r) => this.retrieveRicks(r));
+    const results = await Promise.all(rickAndMortys);
+    const dateFinished = new Date();
+    const millisFinish = dateFinished.getMilliseconds();
+    const secsFinish = dateFinished.getSeconds();
+    const minsFinish = dateFinished.getMinutes();
+    const hourFinish = dateFinished.getHours();
+    const fullTimeSearchFinished = `${hourFinish}:${minsFinish}:${secsFinish}:${millisFinish}`;
+    this.logger.debug(`Search Finished at: ${fullTimeSearchFinished}`);
+    results.map((rick) => this.logger.log(JSON.stringify(rick)));
+  }
 
-        this.logger.debug(`Search finished at: ${searchFinishedAt}`);
-        resolve(rickFound);
-      }, 5000);
+  async fetchSequentialRickAndMorty(
+    userData,
+  ): Promise<void | ReadRickAndMortyResponseDto> {
+    const { rickMortyIds } = userData;
+    rickMortyIds.map(async (rickMorty) => {
+      const dateStarted = new Date();
+      const millisStart = dateStarted.getMilliseconds();
+      const secsStart = dateStarted.getSeconds();
+      const minsStart = dateStarted.getMinutes();
+      const hourStart = dateStarted.getHours();
+      const fullTimeSearchStarted = `${hourStart}:${minsStart}:${secsStart}:${millisStart}`;
+      this.logger.debug(
+        `Search for rick: ${rickMorty} started out at: ${fullTimeSearchStarted}`,
+      );
+      const rick = await this.retrieveRicks(rickMorty);
+      const dateFinished = new Date();
+      const millisFinish = dateFinished.getMilliseconds();
+      const secsFinish = dateFinished.getSeconds();
+      const minsFinish = dateFinished.getMinutes();
+      const hourFinish = dateFinished.getHours();
+      const fullTimeSearchFinished = `${hourFinish}:${minsFinish}:${secsFinish}:${millisFinish}`;
+      this.logger.debug(`Search Finished at: ${fullTimeSearchFinished}`);
+      this.logger.log(JSON.stringify(rick));
+    });
+  }
+
+  retrieveRicks = async (rickId: string): Promise<ReadRickAndMortyResponse> => {
+    return new Promise(async (resolve, reject) => {
+      const { data } = await firstValueFrom(
+        this.httpService
+          .get(`https://rickandmortyapi.com/api/character/${rickId}`)
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data);
+              reject();
+              throw 'An error happened!';
+            }),
+          ),
+      );
+      let rickFound: ReadRickAndMortyResponse = new ReadRickAndMortyResponse();
+      rickFound = data;
+      resolve(rickFound);
     });
   };
 }
