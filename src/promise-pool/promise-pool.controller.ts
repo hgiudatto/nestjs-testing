@@ -23,4 +23,24 @@ export class PromisePoolController {
   ): Promise<void | ReadRickAndMortyResponseDto> {
     return await this.pooledRickMortyService.fetchLimitRickAndMorty(userData);
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('retrieve_concurrent_rickMortys')
+  async getConcurrentRickMortys(
+    @Body() userData,
+  ): Promise<void | ReadRickAndMortyResponseDto> {
+    return await this.pooledRickMortyService.fetchConcurrentRickAndMorty(
+      userData,
+    );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('retrieve_sequential_rickMortys')
+  async getSequentialRickMortys(
+    @Body() userData,
+  ): Promise<void | ReadRickAndMortyResponseDto> {
+    return await this.pooledRickMortyService.fetchSequentialRickAndMorty(
+      userData,
+    );
+  }
 }

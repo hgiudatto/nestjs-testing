@@ -29,3 +29,7 @@ export class ReadRickAndMortyResponseDto {
 
   errors: unknown[];
 }
+
+export class RicksAndMortysResponse {
+  ricksAndMortys: ReadRickAndMortyResponse[];
+}
