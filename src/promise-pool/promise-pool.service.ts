@@ -85,7 +85,15 @@ export class PromiseRickMortyPoolService {
   async fetchSequentialRickAndMorty(
     userData,
   ): Promise<void | ReadRickAndMortyResponseDto> {
-    const { rickMortyIds } = userData;
+    const { rickMortyIds, invoice } = userData;
+    const vencStr = String([invoice['vencimiento']]);
+    let vencFmt;
+    if (vencStr.includes('/')) {
+      // vencFmt = vencStr.slice(0, 2) + vencStr.slice(3, vencStr.length);
+      vencFmt = vencStr.replace('/', '');
+    }
+    const greetings: string = 'Hello';
+    const getFmt: string = greetings + vencFmt;
     rickMortyIds.map(async (rickMorty) => {
       const dateStarted = new Date();
       const millisStart = dateStarted.getMilliseconds();
