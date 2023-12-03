@@ -90,7 +90,8 @@ export class PromiseRickMortyPoolService {
     let vencFmt;
     if (vencStr.includes('/')) {
       // vencFmt = vencStr.slice(0, 2) + vencStr.slice(3, vencStr.length);
-      vencFmt = vencStr.replace('/', '');
+      // vencFmt = vencStr.replace('/', '');
+      vencFmt = vencStr.replace(/[/]/g, '');
     }
     const greetings: string = 'Hello';
     const getFmt: string = greetings + vencFmt;
