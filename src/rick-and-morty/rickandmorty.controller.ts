@@ -22,9 +22,7 @@ export class RickandmortyController {
 
   @HttpCode(HttpStatus.OK)
   @Post('retrieve_rickMortys')
-  async getRickMorty(
-    @Body() userData: ReadOneRickAndMortyRequestDto,
-  ): Promise<Response | void> {
+  async getRickMorty(@Body() userData): Promise<Response | void> {
     return await this.rickAndMortyService.fetchRickAndMorty(userData);
   }
 }

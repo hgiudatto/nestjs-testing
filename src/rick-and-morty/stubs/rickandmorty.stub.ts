@@ -1,6 +1,9 @@
-export const rickAndMortyStub = () => {
-  return {
-    id: 10,
+/* eslint-disable prettier/prettier */
+import { RickAndMorty } from 'src/dto/RickAndMorty.dto';
+
+export const rickAndMortyStub = (): RickAndMorty => {
+  let rickandmorty: RickAndMorty = {
+    id: '10',
     name: 'Alan Rails',
     status: 'Dead',
     species: 'Human',
@@ -19,4 +22,5 @@ export const rickAndMortyStub = () => {
     url: 'https://rickandmortyapi.com/api/character/10',
     created: '2017-11-04T20:19:09.017Z',
   };
+  return rickandmorty;
 };
