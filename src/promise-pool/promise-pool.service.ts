@@ -9,6 +9,8 @@ import { firstValueFrom, catchError } from 'rxjs';
 import {
   ReadRickAndMortyResponse,
   ReadRickAndMortyResponseDto,
+  RicksAndMortysPromiseAllRefactorResponse,
+  RicksAndMortysResponse,
 } from 'src/promise-pool/promise-pool.dto';
 import getRicks from '../helpers/fetchRickAndMortys';
 import { ftruncate } from 'fs';
@@ -19,6 +21,9 @@ export class PromiseRickMortyPoolService {
   private readonly logger = new Logger(PromiseRickMortyPoolService.name);
 
   constructor(private readonly httpService: HttpService) {}
+
+  sleepFetchRickMortys = (delay: number) =>
+    new Promise((resolve) => setTimeout(resolve, delay));
 
   async fetchPooledRickAndMorty(
     userData,
@@ -52,11 +57,12 @@ export class PromiseRickMortyPoolService {
     const { rickMortyIds } = userData;
     const limit = promiseLimit(1);
 
-    Promise.all(
-      rickMortyIds.map((rick) => {
-        return limit(() => this.retrieveRicks(rick));
-      }),
-    );
+    const rickSearches = rickMortyIds.map((rick) => {
+      limit(() => this.retrieveRicks(rick));
+    });
+
+    const result = await Promise.all(rickSearches);
+    this.logger.debug(result);
   }
 
   async fetchConcurrentRickAndMorty(
@@ -117,8 +123,40 @@ export class PromiseRickMortyPoolService {
     });
   }
 
+  async fetchPromiseAllRefactorRickAndMorty(userData) {
+    const { rickMortyIds } = userData;
+    const goodRicks = [];
+
+    const getSearchedRicks = async (rickMorty) => {
+      this.sleepFetchRickMortys(3000);
+      return new Promise(async (resolve, reject) => {
+        const response: ReadRickAndMortyResponse = await this.retrieveRicks(
+          rickMorty,
+        );
+        const successfulRick = response;
+        if (!!response) {
+          goodRicks.push(successfulRick);
+        }
+        resolve(response);
+      });
+    };
+
+    rickMortyIds.map(async (rickMorty) => {
+      await getSearchedRicks(rickMorty);
+    });
+
+    return { goodRicks };
+  }
+
   retrieveRicks = async (rickId: string): Promise<ReadRickAndMortyResponse> => {
     return new Promise(async (resolve, reject) => {
+      const dateStarted = new Date();
+      const millisStart = dateStarted.getMilliseconds();
+      const secsStart = dateStarted.getSeconds();
+      const minsStart = dateStarted.getMinutes();
+      const hourStart = dateStarted.getHours();
+      const fullTimeSearchStarted = `${hourStart}:${minsStart}:${secsStart}:${millisStart}`;
+      this.logger.debug(`Search started out at: ${fullTimeSearchStarted}`);
       const { data } = await firstValueFrom(
         this.httpService
           .get(`https://rickandmortyapi.com/api/character/${rickId}`)
@@ -133,6 +171,13 @@ export class PromiseRickMortyPoolService {
       let rickFound: ReadRickAndMortyResponse = new ReadRickAndMortyResponse();
       rickFound = data;
       resolve(rickFound);
+      const dateFinished = new Date();
+      const millisFinish = dateFinished.getMilliseconds();
+      const secsFinish = dateFinished.getSeconds();
+      const minsFinish = dateFinished.getMinutes();
+      const hourFinish = dateFinished.getHours();
+      const fullTimeSearchFinished = `${hourFinish}:${minsFinish}:${secsFinish}:${millisFinish}`;
+      this.logger.debug(`Search Finished at: ${fullTimeSearchFinished}`);
     });
   };
 }

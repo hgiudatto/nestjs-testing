@@ -26,8 +26,11 @@ export class ReadRickAndMortyRequestDto {
 
 export class ReadRickAndMortyResponseDto {
   results: unknown[];
-
   errors: unknown[];
+}
+
+export class RicksAndMortysPromiseAllRefactorResponse {
+  goodRicks: ReadRickAndMortyResponse[];
 }
 
 export class RicksAndMortysResponse {

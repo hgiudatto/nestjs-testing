@@ -1,6 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { PromiseRickMortyPoolService } from './promise-pool.service';
-import { ReadRickAndMortyResponseDto } from 'src/promise-pool/promise-pool.dto';
+import {
+  ReadRickAndMortyResponseDto,
+  RicksAndMortysPromiseAllRefactorResponse,
+} from 'src/promise-pool/promise-pool.dto';
+import { ReadRickAndMortyResponse } from 'src/rick-and-morty/rick-and-morty.dto';
 
 @Controller('promise-pool')
 export class PromisePoolController {
@@ -40,6 +44,16 @@ export class PromisePoolController {
     @Body() userData,
   ): Promise<void | ReadRickAndMortyResponseDto> {
     return await this.pooledRickMortyService.fetchSequentialRickAndMorty(
+      userData,
+    );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('retrieve_promiseAllRefactor_rickMortys')
+  async getPormiseAllRefactorRickAndMorty(
+    @Body() userData,
+  ): Promise<RicksAndMortysPromiseAllRefactorResponse> {
+    return await this.pooledRickMortyService.fetchPromiseAllRefactorRickAndMorty(
       userData,
     );
   }
