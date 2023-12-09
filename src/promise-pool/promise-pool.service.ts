@@ -141,9 +141,9 @@ export class PromiseRickMortyPoolService {
       });
     };
 
-    rickMortyIds.map(async (rickMorty) => {
-      await getSearchedRicks(rickMorty);
-    });
+    for (const rickMortyId of rickMortyIds) {
+      await getSearchedRicks(rickMortyId);
+    }
 
     return { goodRicks };
   }
