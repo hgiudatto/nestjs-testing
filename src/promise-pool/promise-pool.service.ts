@@ -9,11 +9,8 @@ import { firstValueFrom, catchError } from 'rxjs';
 import {
   ReadRickAndMortyResponse,
   ReadRickAndMortyResponseDto,
-  RicksAndMortysPromiseAllRefactorResponse,
-  RicksAndMortysResponse,
 } from 'src/promise-pool/promise-pool.dto';
 import getRicks from '../helpers/fetchRickAndMortys';
-import { ftruncate } from 'fs';
 const promiseLimit = require('promise-limit');
 
 @Injectable()
@@ -142,6 +139,7 @@ export class PromiseRickMortyPoolService {
     };
 
     for (const rickMortyId of rickMortyIds) {
+      this.logger.debug(`Retrieve rick with id: ${rickMortyId}`);
       await getSearchedRicks(rickMortyId);
     }
 

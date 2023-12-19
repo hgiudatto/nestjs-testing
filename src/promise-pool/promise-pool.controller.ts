@@ -4,7 +4,6 @@ import {
   ReadRickAndMortyResponseDto,
   RicksAndMortysPromiseAllRefactorResponse,
 } from 'src/promise-pool/promise-pool.dto';
-import { ReadRickAndMortyResponse } from 'src/rick-and-morty/rick-and-morty.dto';
 
 @Controller('promise-pool')
 export class PromisePoolController {

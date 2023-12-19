@@ -2,7 +2,7 @@
 import { RickAndMorty } from 'src/dto/RickAndMorty.dto';
 
 export const rickAndMortyStub = (): RickAndMorty => {
-  let rickandmorty: RickAndMorty = {
+  const rickandmorty: RickAndMorty = {
     id: '10',
     name: 'Alan Rails',
     status: 'Dead',

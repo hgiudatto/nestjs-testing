@@ -14,6 +14,7 @@ import {
   ReadRickAndMortyResponse,
   ReadRickAndMortyRequestDto,
   ReadOneRickAndMortyRequestDto,
+  RicksAndMortysPromiseAllRefactorResponse,
 } from './rick-and-morty.dto';
 
 @Controller('rickandmorty')
@@ -24,5 +25,13 @@ export class RickandmortyController {
   @Post('retrieve_rickMortys')
   async getRickMorty(@Body() userData): Promise<Response | void> {
     return await this.rickAndMortyService.fetchRickAndMorty(userData);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('retrieve_everyRickMortys')
+  async getAllRickMorty(
+    @Body() userData,
+  ): Promise<RicksAndMortysPromiseAllRefactorResponse> {
+    return await this.rickAndMortyService.fetchEveryRickAndMorty(userData);
   }
 }

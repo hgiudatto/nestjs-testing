@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ReadOneRickAndMortyRequestDto } from 'src/rick-and-morty/rick-and-morty.dto';
 
 /* eslint-disable prettier/prettier */
