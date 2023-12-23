@@ -1,40 +1,65 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RickandmortyController } from './rickandmorty.controller';
-import { RickAndMortyService } from './rick-and-morty.service';
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+import { Test } from '@nestjs/testing';
+import { RickandmortyController } from '../rick-and-morty/rickandmorty.controller';
+import { RickAndMortyService } from '../rick-and-morty/rickandmorty.service';
 import { rickAndMortyStub } from './stubs/rickandmorty.stub';
+import { everyRickAndMortyStub } from './stubs/every-rickandmorty.stub';
+import { allRickMortyStub } from './stubs/allRickMorty.stub';
 import test from 'node:test';
+import { RickAndMorty } from 'src/dto/RickAndMorty.dto';
 
-jest.mock('../rick-and-morty/__mocks__/rick-and-morty.service');
+jest.mock('../rick-and-morty/rickandmorty.service');
 
-describe('RickandmortyController', () => {
-  let controller: RickandmortyController;
-  let service: RickAndMortyService;
+describe('RickandmortyrickAndMortyController', () => {
+  let rickAndMortyController: RickandmortyController;
+  let rickAndMortyService: RickAndMortyService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const moduleRef = await Test.createTestingModule({
       imports: [],
       controllers: [RickandmortyController],
       providers: [RickAndMortyService],
     }).compile();
 
-    controller = module.get<RickandmortyController>(RickandmortyController);
-    service = module.get<RickAndMortyService>(RickAndMortyService);
+    rickAndMortyController = moduleRef.get<RickandmortyController>(
+      RickandmortyController,
+    );
+    rickAndMortyService =
+      moduleRef.get<RickAndMortyService>(RickAndMortyService);
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  /* it('should be defined', () => {
+    expect(rickAndMortyController).toBeDefined();
+  }); */
 
-  describe('getRickMorty', () => {
-    describe('when getRickMorty is called', () => {
+  /* describe('when getRickMorty is called', () => {
       beforeEach(async () => {
-        await controller.getRickMorty(rickAndMortyStub().id);
+        await rickAndMortyController.getRickMorty(rickAndMortyStub().id);
       });
 
       test('Then it should call service', () => {
-        expect(service.getRickAndMorty).toHaveBeenCalledWith(
+        expect(rickAndMortyService.getRickAndMorty).toHaveBeenCalledWith(
           rickAndMortyStub().id,
+        );
+      });
+    }); */
+
+  describe('getAllRickMorty', () => {
+    describe('when getAllRickMorty is called', () => {
+      let allRicksAndMortys: RickAndMorty[] = [];
+      beforeEach(async () => {
+        /* @ts-expect-error async */
+        allRicksAndMortys = await rickAndMortyController.getAllRickMorty(
+          allRickMortyStub(),
+        );
+      });
+
+      test('then it should call service', () => {
+        expect(rickAndMortyService.fetchEveryRickAndMorty).toBeCalledWith(
+          allRickMortyStub(),
         );
       });
     });

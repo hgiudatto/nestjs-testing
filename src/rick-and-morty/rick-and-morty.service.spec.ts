@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { RickAndMortyService } from './rick-and-morty.service';
+import { RickAndMortyService } from './rickandmorty.service';
 import { BadRequestException } from '@nestjs/common';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import { Test, TestingModule } from '@nestjs/testing';

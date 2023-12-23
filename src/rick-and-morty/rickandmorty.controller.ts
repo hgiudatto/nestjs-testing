@@ -9,7 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { RickAndMortyService } from './rick-and-morty.service';
+import { RickAndMortyService } from './rickandmorty.service';
 import {
   ReadRickAndMortyResponse,
   ReadRickAndMortyRequestDto,

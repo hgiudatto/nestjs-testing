@@ -1,0 +1,157 @@
+/* eslint-disable prettier/prettier */
+import { RickAndMorty } from 'src/dto/RickAndMorty.dto';
+
+export const everyRickAndMortyStub = (): RickAndMorty[] => {
+  const everyRickAndMorty: RickAndMorty[] = [
+    {
+      id: '19',
+      name: 'Antenna Rick',
+      status: 'unknown',
+      species: 'Human',
+      type: 'Human with antennae',
+      gender: 'Male',
+      origin: {
+        name: 'unknown',
+        url: '',
+      },
+      location: {
+        name: 'unknown',
+        url: '',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+      episode: ['https://rickandmortyapi.com/api/episode/10'],
+      url: 'https://rickandmortyapi.com/api/character/19',
+      created: '2017-11-04T22:28:13.756Z',
+    },
+    {
+      id: '38',
+      name: 'Beth Smith',
+      status: 'Alive',
+      species: 'Human',
+      type: '',
+      gender: 'Female',
+      origin: {
+        name: 'Earth (C-137)',
+        url: 'https://rickandmortyapi.com/api/location/1',
+      },
+      location: {
+        name: 'Earth (C-137)',
+        url: 'https://rickandmortyapi.com/api/location/1',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/38.jpeg',
+      episode: [
+        'https://rickandmortyapi.com/api/episode/1',
+        'https://rickandmortyapi.com/api/episode/2',
+        'https://rickandmortyapi.com/api/episode/3',
+        'https://rickandmortyapi.com/api/episode/4',
+        'https://rickandmortyapi.com/api/episode/5',
+        'https://rickandmortyapi.com/api/episode/6',
+        'https://rickandmortyapi.com/api/episode/22',
+        'https://rickandmortyapi.com/api/episode/51',
+      ],
+      url: 'https://rickandmortyapi.com/api/character/38',
+      created: '2017-11-05T09:48:44.230Z',
+    },
+    {
+      id: '47',
+      name: 'Birdperson',
+      status: 'Alive',
+      species: 'Alien',
+      type: 'Bird-Person',
+      gender: 'Male',
+      origin: {
+        name: 'Bird World',
+        url: 'https://rickandmortyapi.com/api/location/15',
+      },
+      location: {
+        name: 'Planet Squanch',
+        url: 'https://rickandmortyapi.com/api/location/35',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/47.jpeg',
+      episode: [
+        'https://rickandmortyapi.com/api/episode/11',
+        'https://rickandmortyapi.com/api/episode/16',
+        'https://rickandmortyapi.com/api/episode/21',
+        'https://rickandmortyapi.com/api/episode/22',
+        'https://rickandmortyapi.com/api/episode/26',
+        'https://rickandmortyapi.com/api/episode/49',
+        'https://rickandmortyapi.com/api/episode/51',
+      ],
+      url: 'https://rickandmortyapi.com/api/character/47',
+      created: '2017-11-05T11:13:36.018Z',
+    },
+    {
+      id: '240',
+      name: 'Mr. Goldenfold',
+      status: 'Alive',
+      species: 'Human',
+      type: '',
+      gender: 'Male',
+      origin: {
+        name: 'Earth (Replacement Dimension)',
+        url: 'https://rickandmortyapi.com/api/location/20',
+      },
+      location: {
+        name: 'Earth (Replacement Dimension)',
+        url: 'https://rickandmortyapi.com/api/location/20',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/240.jpeg',
+      episode: [
+        'https://rickandmortyapi.com/api/episode/9',
+        'https://rickandmortyapi.com/api/episode/16',
+        'https://rickandmortyapi.com/api/episode/17',
+        'https://rickandmortyapi.com/api/episode/18',
+        'https://rickandmortyapi.com/api/episode/21',
+        'https://rickandmortyapi.com/api/episode/22',
+        'https://rickandmortyapi.com/api/episode/24',
+        'https://rickandmortyapi.com/api/episode/27',
+        'https://rickandmortyapi.com/api/episode/30',
+        'https://rickandmortyapi.com/api/episode/39',
+      ],
+      url: 'https://rickandmortyapi.com/api/character/240',
+      created: '2017-12-30T17:42:56.349Z',
+    },
+    {
+      id: '328',
+      name: 'Slow Rick',
+      status: 'Alive',
+      species: 'Human',
+      type: '',
+      gender: 'Male',
+      origin: {
+        name: 'unknown',
+        url: '',
+      },
+      location: {
+        name: 'Citadel of Ricks',
+        url: 'https://rickandmortyapi.com/api/location/3',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/328.jpeg',
+      episode: ['https://rickandmortyapi.com/api/episode/28'],
+      url: 'https://rickandmortyapi.com/api/character/328',
+      created: '2018-01-10T16:14:16.331Z',
+    },
+    {
+      id: '407',
+      name: 'Regular Tyrion Lannister',
+      status: 'Alive',
+      species: 'Human',
+      type: '',
+      gender: 'Male',
+      origin: {
+        name: 'Interdimensional Cable',
+        url: 'https://rickandmortyapi.com/api/location/6',
+      },
+      location: {
+        name: 'Interdimensional Cable',
+        url: 'https://rickandmortyapi.com/api/location/6',
+      },
+      image: 'https://rickandmortyapi.com/api/character/avatar/407.jpeg',
+      episode: ['https://rickandmortyapi.com/api/episode/8'],
+      url: 'https://rickandmortyapi.com/api/character/407',
+      created: '2018-04-15T20:50:10.475Z',
+    },
+  ];
+
+  return everyRickAndMorty;
+};

@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { RickAndMortyService } from './rick-and-morty.service';
+import { RickAndMortyService } from './rickandmorty.service';
 
 @Module({
   imports: [HttpModule],
