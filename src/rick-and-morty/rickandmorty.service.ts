@@ -1,12 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { HttpService } from '@nestjs/axios';
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import {
   getCharacters,
   Character,
@@ -14,15 +8,13 @@ import {
   Info,
   CharacterLocation,
 } from 'rickmortyapi';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import {
   ReadOneRickAndMortyRequestDto,
-  ReadRickAndMortyRequestDto,
   ReadRickAndMortyResponse,
 } from './rick-and-morty.dto';
-import { firstValueFrom, of, defer } from 'rxjs';
-import { retry, retryWhen, delay, take, map, catchError } from 'rxjs/operators';
-import { resolve } from 'path';
+import { firstValueFrom } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class RickAndMortyService {
